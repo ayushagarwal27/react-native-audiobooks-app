@@ -7,8 +7,11 @@ import dummyBooks from "@/dummy-books";
 import { Ionicons } from "@expo/vector-icons";
 import PlaybackBar from "@/components/PlaybackBar";
 
+import { useAudioPlayer } from "expo-audio";
+
 export default function PlayerScreen() {
   const book = dummyBooks[0];
+  const player = useAudioPlayer({ uri: book.audio_url });
 
   return (
     <SafeAreaView className="flex-1 bg-gray-900 p-4 py-10 gap-4">
