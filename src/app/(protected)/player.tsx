@@ -35,6 +35,7 @@ export default function PlayerScreen() {
         <PlaybackBar
           currentTime={playerStatus.currentTime}
           duration={playerStatus.duration}
+          onSeek={(seconds: number) => player.seekTo(seconds)}
         />
         <View className="flex-row items-center justify-between">
           <Ionicons name="play-skip-back" size={24} color="white" />
