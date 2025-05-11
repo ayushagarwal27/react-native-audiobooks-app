@@ -3,7 +3,7 @@ import React from "react";
 import { useSupabase } from "@/lib/supabase";
 import { useQuery } from "@tanstack/react-query";
 import { FlatList } from "react-native";
-import BookListItem from "@/components/BookListItem";
+import DiscoveryBookListItem from "@/components/DiscoveryBookListItem";
 
 export default function DiscoverScreen() {
   const supabase = useSupabase();
@@ -24,7 +24,7 @@ export default function DiscoverScreen() {
     <FlatList
       data={data?.data || []}
       contentContainerClassName="gap-4 p-2"
-      renderItem={({ item }) => <BookListItem book={item} />}
+      renderItem={({ item }) => <DiscoveryBookListItem book={item} />}
     />
   );
 }

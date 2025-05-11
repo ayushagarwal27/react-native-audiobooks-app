@@ -1,7 +1,6 @@
 import { Image, Pressable, Text, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { FC } from "react";
-import { Link } from "expo-router";
 import { usePlayer } from "@/providers/PlayerProvider";
 
 type Book = {
