@@ -3,7 +3,6 @@ import React from "react";
 import Entypo from "@expo/vector-icons/Entypo";
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import dummyBooks from "@/dummy-books";
 import { Ionicons } from "@expo/vector-icons";
 import PlaybackBar from "@/components/PlaybackBar";
 
@@ -11,9 +10,7 @@ import { useAudioPlayerStatus } from "expo-audio";
 import { usePlayer } from "@/providers/PlayerProvider";
 
 export default function PlayerScreen() {
-  const book = dummyBooks[0];
-  // @ts-ignore
-  const { player } = usePlayer();
+  const { player, book } = usePlayer();
   const playerStatus = useAudioPlayerStatus(player);
 
   return (

@@ -4,16 +4,18 @@ import { Link } from "expo-router";
 
 import { useAudioPlayerStatus } from "expo-audio";
 import { usePlayer } from "@/providers/PlayerProvider";
-import dummyBooks from "@/dummy-books";
 
 const FloatingPlayer = () => {
-  const book = dummyBooks[0];
-  // @ts-ignore
-  const { player } = usePlayer();
+  const { player, book } = usePlayer();
   const playerStatus = useAudioPlayerStatus(player);
+
+  if (!book) {
+    return null;
+  }
+
   return (
     <Link href={"/player"} asChild>
-      <Pressable className="flex-row gap-2 items-center p-2 bg-slate-100late-900">
+      <Pressable className="flex-row gap-2 items-center p-2 bg-slate-900">
         <Image
           source={{ uri: book.thumbnail_url }}
           className="size-24 rounded-16"
@@ -23,7 +25,13 @@ const FloatingPlayer = () => {
           <Text className="text-gray-400 ">{book.author}</Text>
         </View>
         <AntDesign
-          name={playerStatus.playing ? "pausecircleo" : "playcircleo"}
+          name={
+            playerStatus.isBuffering
+              ? "loading1"
+              : playerStatus.playing
+              ? "pausecircleo"
+              : "playcircleo"
+          }
           size={24}
           color={"gainsboro"}
           onPress={() => {
