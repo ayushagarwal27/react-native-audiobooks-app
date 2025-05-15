@@ -1,5 +1,5 @@
 import { Text, Pressable, Image, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import Entypo from "@expo/vector-icons/Entypo";
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -8,10 +8,39 @@ import PlaybackBar from "@/components/PlaybackBar";
 
 import { useAudioPlayerStatus } from "expo-audio";
 import { usePlayer } from "@/providers/PlayerProvider";
+import { useSupabase } from "@/lib/supabase";
+import * as FileSystem from "expo-file-system";
 
 export default function PlayerScreen() {
   const { player, book } = usePlayer();
   const playerStatus = useAudioPlayerStatus(player);
+  const supabase = useSupabase();
+
+  console.log(book);
+
+  const handleDownloadBook = async () => {
+    if (!book.audio_file) {
+      console.log("Not in supabase storage");
+      return;
+    }
+
+    const { data } = await supabase.storage
+      .from("audios")
+      .getPublicUrl(book.audio_file);
+
+    if (data) {
+      const downloadResumable = FileSystem.createDownloadResumable(
+        data.publicUrl,
+        `${FileSystem.documentDirectory}${book.id}.mp3`,
+        {},
+        (progress) => {
+          console.log(progress);
+        }
+      );
+
+      const result = await downloadResumable.downloadAsync();
+    }
+  };
 
   return (
     <SafeAreaView className="flex-1  p-4 py-10 gap-4">
@@ -52,7 +81,12 @@ export default function PlayerScreen() {
             }}
           />
           <Ionicons name="play-forward" size={24} color="white" />
-          <Ionicons name="play-skip-forward" size={24} color="white" />
+          <Ionicons
+            name="cloud-download-outline"
+            size={24}
+            color="white"
+            onPress={handleDownloadBook}
+          />
         </View>
       </View>
     </SafeAreaView>
